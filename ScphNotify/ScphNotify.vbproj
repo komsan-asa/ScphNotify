@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SCPH Notify 2026
+    - Visual Studio 2026 / .NET 10 (Windows Forms, Visual Basic)
+    - แปลงจากโปรเจกต์เดิม .NET Framework 4.6.1 (D:\VB Project\ScphNotify)
+  -->
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>ScphNotify</RootNamespace>
+    <AssemblyName>ScphNotify</AssemblyName>
+    <StartupObject>ScphNotify.Program</StartupObject>
+    <UseWindowsForms>true</UseWindowsForms>
+
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <OptionCompare>Binary</OptionCompare>
+
+    <ApplicationIcon>Assets\ScphNotify.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+
+    <Product>SCPH Notify</Product>
+    <Company>SCPH</Company>
+    <Description>ระบบแจ้งเตือนข้อมูลผู้ป่วยจาก HOSxP สำหรับจุดบริการ</Description>
+    <Copyright>SCPH</Copyright>
+    <!-- เลขรุ่นมีที่เดียวคือตรงนี้ publish.ps1 อ่านค่านี้ไปตั้งชื่อไฟล์ตัวติดตั้ง -->
+    <Version>2.0.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- MySQL driver รุ่นใหม่ (แทน MySql.Data 6.6.5 เดิม) รองรับ MySQL 5.5+ / MariaDB 10+ -->
+    <PackageReference Include="MySqlConnector" Version="2.6.2" />
+    <!-- ใช้เข้ารหัสรหัสผ่านฐานข้อมูลที่บันทึกในเครื่อง (Windows DPAPI) -->
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\ScphNotify.ico" LogicalName="ScphNotify.ico" />
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

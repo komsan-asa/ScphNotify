@@ -1,0 +1,30 @@
+## Visual Studio / .NET
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.rsuser
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ll]og/
+*.log
+TestResults/
+publish/
+*.pubxml.user
+packages/
+*.nupkg
+
+## ชุดแจกจ่ายที่ publish.ps1 สร้าง (dist\app, dist\ScphNotify-Setup-*.exe)
+dist/
+
+## log ของ publish.ps1
+build.log
+
+## Secrets / local config — ไฟล์จริงมีรหัสผ่านฐานข้อมูล ใช้ appsettings.Example.json เป็นต้นแบบ
+**/appsettings.json
+**/appsettings.*.json
+!**/appsettings.Example.json
