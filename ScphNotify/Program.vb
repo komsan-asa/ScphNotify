@@ -34,6 +34,7 @@ Friend Module Program
             Dim demo = args.Any(Function(a) a.Equals("--demo", StringComparison.OrdinalIgnoreCase) OrElse
                                             a.Equals("/demo", StringComparison.OrdinalIgnoreCase))
             AppSession.Initialize(demo)
+            AdminIdleTimer.Install()
 
             ' โหมดกู้คืน: เปิดหน้าตั้งค่าฐานข้อมูลได้โดยไม่ต้องล็อกอิน (ใช้ตอนต่อฐานข้อมูลไม่ได้)
             If args.Any(Function(a) a.Equals("--dbconfig", StringComparison.OrdinalIgnoreCase) OrElse

@@ -57,6 +57,12 @@ Partial Class SettingsPage
         lblDbName = New Label()
         lblComputer = New Label()
         btnDbConfig = New ModernButton()
+        btnLogout = New ModernButton()
+        flpIdle = New FlowLayoutPanel()
+        lblIdle = New Label()
+        nudIdle = New NumericUpDown()
+        lblIdleUnit = New Label()
+        lblIdleNote = New Label()
         lblShortcut = New Label()
         pnlPageHeader.SuspendLayout()
         pnlFooter.SuspendLayout()
@@ -68,6 +74,8 @@ Partial Class SettingsPage
         flpApp.SuspendLayout()
         flpInterval.SuspendLayout()
         CType(nudInterval, System.ComponentModel.ISupportInitialize).BeginInit()
+        flpIdle.SuspendLayout()
+        CType(nudIdle, System.ComponentModel.ISupportInitialize).BeginInit()
         cardDb.SuspendLayout()
         flpDb.SuspendLayout()
         SuspendLayout()
@@ -326,7 +334,7 @@ Partial Class SettingsPage
         tlpRight.Margin = New Padding(0)
         tlpRight.Name = "tlpRight"
         tlpRight.RowCount = 2
-        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 196.0F))
+        tlpRight.RowStyles.Add(New RowStyle(SizeType.Absolute, 252.0F))
         tlpRight.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0F))
         tlpRight.Size = New Size(450, 474)
         tlpRight.TabIndex = 1
@@ -339,7 +347,7 @@ Partial Class SettingsPage
         cardApp.Location = New Point(0, 0)
         cardApp.Margin = New Padding(0, 0, 0, 16)
         cardApp.Name = "cardApp"
-        cardApp.Size = New Size(450, 180)
+        cardApp.Size = New Size(450, 236)
         cardApp.Subtitle = "บันทึกไว้ในเครื่องนี้ (%LOCALAPPDATA%\ScphNotify)"
         cardApp.TabIndex = 0
         cardApp.Title = "การทำงานของโปรแกรม"
@@ -347,12 +355,14 @@ Partial Class SettingsPage
         'flpApp
         '
         flpApp.Controls.Add(flpInterval)
+        flpApp.Controls.Add(flpIdle)
+        flpApp.Controls.Add(lblIdleNote)
         flpApp.Controls.Add(tgTopMost)
         flpApp.Dock = DockStyle.Fill
         flpApp.FlowDirection = FlowDirection.TopDown
         flpApp.Location = New Point(16, 70)
         flpApp.Name = "flpApp"
-        flpApp.Size = New Size(418, 94)
+        flpApp.Size = New Size(418, 150)
         flpApp.TabIndex = 0
         flpApp.WrapContents = False
         '
@@ -417,10 +427,10 @@ Partial Class SettingsPage
         cardDb.Dock = DockStyle.Fill
         cardDb.IconKind = IconKind.Database
         cardDb.IconLevel = AlertLevel.Info
-        cardDb.Location = New Point(0, 196)
+        cardDb.Location = New Point(0, 252)
         cardDb.Margin = New Padding(0)
         cardDb.Name = "cardDb"
-        cardDb.Size = New Size(450, 278)
+        cardDb.Size = New Size(450, 222)
         cardDb.TabIndex = 1
         cardDb.Title = "ฐานข้อมูล HOSxP"
         '
@@ -430,12 +440,13 @@ Partial Class SettingsPage
         flpDb.Controls.Add(lblDbName)
         flpDb.Controls.Add(lblComputer)
         flpDb.Controls.Add(btnDbConfig)
+        flpDb.Controls.Add(btnLogout)
         flpDb.Controls.Add(lblShortcut)
         flpDb.Dock = DockStyle.Fill
         flpDb.FlowDirection = FlowDirection.TopDown
         flpDb.Location = New Point(16, 56)
         flpDb.Name = "flpDb"
-        flpDb.Size = New Size(418, 206)
+        flpDb.Size = New Size(418, 150)
         flpDb.TabIndex = 0
         flpDb.WrapContents = False
         '
@@ -486,6 +497,75 @@ Partial Class SettingsPage
         btnDbConfig.TabIndex = 3
         btnDbConfig.Text = "ตั้งค่าการเชื่อมต่อ..."
         '
+        'btnLogout
+        '
+        btnLogout.IconKind = IconKind.Power
+        btnLogout.Kind = ButtonVariant.Danger
+        btnLogout.Location = New Point(0, 126)
+        btnLogout.Margin = New Padding(0, 8, 0, 0)
+        btnLogout.Name = "btnLogout"
+        btnLogout.Size = New Size(230, 42)
+        btnLogout.TabIndex = 4
+        btnLogout.Text = "ออกจากระบบผู้ดูแล"
+        btnLogout.Visible = False
+        '
+        'flpIdle
+        '
+        flpIdle.AutoSize = True
+        flpIdle.Controls.Add(lblIdle)
+        flpIdle.Controls.Add(nudIdle)
+        flpIdle.Controls.Add(lblIdleUnit)
+        flpIdle.Location = New Point(0, 40)
+        flpIdle.Margin = New Padding(0, 0, 0, 2)
+        flpIdle.Name = "flpIdle"
+        flpIdle.Size = New Size(400, 34)
+        flpIdle.TabIndex = 5
+        flpIdle.WrapContents = False
+        '
+        'lblIdle
+        '
+        lblIdle.AutoSize = True
+        lblIdle.Location = New Point(0, 8)
+        lblIdle.Margin = New Padding(0, 8, 8, 0)
+        lblIdle.Name = "lblIdle"
+        lblIdle.Size = New Size(196, 19)
+        lblIdle.TabIndex = 0
+        lblIdle.Text = "ออกจากระบบอัตโนมัติเมื่อไม่ใช้งาน"
+        '
+        'nudIdle
+        '
+        nudIdle.Font = New Font("Leelawadee UI", 11.0F)
+        nudIdle.Location = New Point(204, 3)
+        nudIdle.Maximum = New Decimal(New Integer() {240, 0, 0, 0})
+        nudIdle.Minimum = New Decimal(New Integer() {0, 0, 0, 0})
+        nudIdle.Name = "nudIdle"
+        nudIdle.Size = New Size(72, 27)
+        nudIdle.TabIndex = 1
+        nudIdle.TextAlign = HorizontalAlignment.Center
+        nudIdle.Value = New Decimal(New Integer() {30, 0, 0, 0})
+        '
+        'lblIdleUnit
+        '
+        lblIdleUnit.AutoSize = True
+        lblIdleUnit.Location = New Point(287, 8)
+        lblIdleUnit.Margin = New Padding(8, 8, 0, 0)
+        lblIdleUnit.Name = "lblIdleUnit"
+        lblIdleUnit.Size = New Size(35, 19)
+        lblIdleUnit.TabIndex = 2
+        lblIdleUnit.Text = "นาที"
+        '
+        'lblIdleNote
+        '
+        lblIdleNote.AutoSize = True
+        lblIdleNote.Font = New Font("Leelawadee UI", 8.5F)
+        lblIdleNote.ForeColor = Color.FromArgb(CByte(148), CByte(163), CByte(184))
+        lblIdleNote.Location = New Point(0, 76)
+        lblIdleNote.Margin = New Padding(0, 4, 0, 0)
+        lblIdleNote.Name = "lblIdleNote"
+        lblIdleNote.Size = New Size(330, 16)
+        lblIdleNote.TabIndex = 6
+        lblIdleNote.Text = "นับเฉพาะการใช้งานโปรแกรมนี้  ·  ใส่ 0 = ไม่ออกอัตโนมัติ"
+        '
         'lblShortcut
         '
         lblShortcut.AutoSize = True
@@ -495,7 +575,7 @@ Partial Class SettingsPage
         lblShortcut.Margin = New Padding(0, 8, 0, 0)
         lblShortcut.Name = "lblShortcut"
         lblShortcut.Size = New Size(200, 16)
-        lblShortcut.TabIndex = 4
+        lblShortcut.TabIndex = 7
         lblShortcut.Text = "หรือกด Ctrl+F6 จากหน้าต่างใดก็ได้"
         '
         'SettingsPage
@@ -503,7 +583,7 @@ Partial Class SettingsPage
         AutoScaleDimensions = New SizeF(96.0F, 96.0F)
         AutoScaleMode = AutoScaleMode.Dpi
         AutoScroll = True
-        AutoScrollMinSize = New Size(820, 560)
+        AutoScrollMinSize = New Size(820, 680)
         BackColor = Color.FromArgb(CByte(244), CByte(246), CByte(250))
         Controls.Add(tlpMain)
         Controls.Add(pnlFooter)
@@ -525,6 +605,9 @@ Partial Class SettingsPage
         flpInterval.ResumeLayout(False)
         flpInterval.PerformLayout()
         CType(nudInterval, System.ComponentModel.ISupportInitialize).EndInit()
+        flpIdle.ResumeLayout(False)
+        flpIdle.PerformLayout()
+        CType(nudIdle, System.ComponentModel.ISupportInitialize).EndInit()
         cardDb.ResumeLayout(False)
         flpDb.ResumeLayout(False)
         flpDb.PerformLayout()
@@ -567,4 +650,10 @@ Partial Class SettingsPage
     Friend WithEvents lblComputer As Label
     Friend WithEvents btnDbConfig As ModernButton
     Friend WithEvents lblShortcut As Label
+    Friend WithEvents btnLogout As ModernButton
+    Friend WithEvents flpIdle As FlowLayoutPanel
+    Friend WithEvents lblIdle As Label
+    Friend WithEvents nudIdle As NumericUpDown
+    Friend WithEvents lblIdleUnit As Label
+    Friend WithEvents lblIdleNote As Label
 End Class

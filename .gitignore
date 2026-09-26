@@ -28,3 +28,6 @@ build.log
 **/appsettings.json
 **/appsettings.*.json
 !**/appsettings.Example.json
+
+## สคริปต์ช่วย push (ไม่ใช่ส่วนของโปรเจกต์)
+git-push.cmd

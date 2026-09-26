@@ -20,6 +20,7 @@ Public Class SettingsPage
     End Sub
 
     Public Sub ResetBinding() Implements IPatientPage.ResetBinding
+        LoadValues()
     End Sub
 
     Private Sub LoadValues()
@@ -29,7 +30,11 @@ Public Class SettingsPage
         Next
         Dim cfg = AppConfig.Current
         nudInterval.Value = Math.Max(nudInterval.Minimum, Math.Min(nudInterval.Maximum, CDec(cfg.RefreshSeconds)))
+        nudIdle.Value = Math.Max(nudIdle.Minimum, Math.Min(nudIdle.Maximum, CDec(cfg.Security.AdminIdleLogoutMinutes)))
         tgTopMost.Checked = cfg.WidgetTopMost
+
+        ' ปุ่มออกจากระบบมีความหมายเฉพาะตอนที่ล็อกอินผู้ดูแลอยู่
+        btnLogout.Visible = AppSession.IsAdminSignedIn
 
         Dim db = cfg.Database
         If AppSession.IsDemo Then
@@ -43,6 +48,13 @@ Public Class SettingsPage
             lblDbServer.Text = "เชื่อมต่อฐานข้อมูลโรงพยาบาลแล้ว"
             lblDbName.Text = "เข้าสู่ระบบผู้ดูแลเพื่อดูและแก้ไขค่าการเชื่อมต่อ"
         End If
+
+        ' บอกเหตุผลเมื่อถูกให้ออกจากระบบเอง ไม่อย่างนั้นผู้ใช้จะงงว่าทำไมต้องล็อกอินใหม่
+        If AppSession.SignedOutByIdle Then
+            AppSession.SignedOutByIdle = False
+            lblSaveStatus.ForeColor = Theme.WarningText
+            lblSaveStatus.Text = $"ออกจากระบบผู้ดูแลอัตโนมัติ เพราะไม่มีการใช้งานเกิน {cfg.Security.AdminIdleLogoutMinutes} นาที"
+        End If
         lblComputer.Text = $"ชื่อเครื่องนี้: {AppSession.ComputerName}  (ใช้ค้นหา vn_lock และ app_storage)"
     End Sub
 
@@ -54,6 +66,7 @@ Public Class SettingsPage
             ' ค่าที่เก็บในเครื่อง
             Dim cfg = AppConfig.Current
             cfg.RefreshSeconds = CInt(nudInterval.Value)
+            cfg.Security.AdminIdleLogoutMinutes = CInt(nudIdle.Value)
             cfg.WidgetTopMost = tgTopMost.Checked
             AppSession.Monitor.IntervalSeconds = cfg.RefreshSeconds
             AppConfig.Save()
@@ -80,6 +93,17 @@ Public Class SettingsPage
     Private Sub btnDbConfig_Click(sender As Object, e As EventArgs) Handles btnDbConfig.Click
         DbConfigDialog.ShowConfig(FindForm())
         LoadValues()
+    End Sub
+
+    ''' <summary>
+    ''' ออกจากระบบผู้ดูแลด้วยตนเอง — ข้อมูลเซิร์ฟเวอร์จะถูกซ่อนทันที
+    ''' ไม่ต้องถามยืนยัน เพราะกดผิดก็แค่ล็อกอินใหม่ ไม่มีอะไรเสียหาย
+    ''' </summary>
+    Private Sub btnLogout_Click(sender As Object, e As EventArgs) Handles btnLogout.Click
+        AppSession.SignOutAdmin()
+        LoadValues()
+        lblSaveStatus.ForeColor = Theme.TextSecondary
+        lblSaveStatus.Text = $"ออกจากระบบผู้ดูแลแล้ว เวลา {ThaiDate.TimeText(DateTime.Now)}"
     End Sub
 
 End Class

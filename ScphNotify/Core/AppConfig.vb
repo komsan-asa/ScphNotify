@@ -93,6 +93,15 @@ Public Class SecuritySettings
     ''' </summary>
     Public Property AllowHosxpSessionLogin As Boolean = True
 
+    ''' <summary>
+    ''' ออกจากระบบผู้ดูแลอัตโนมัติเมื่อไม่มีการใช้งานโปรแกรมนี้ครบกี่นาที (0 = ไม่ออกอัตโนมัติ)
+    '''
+    ''' หลังล็อกอินผู้ดูแล หน้าตั้งค่าจะเปิดเผยชื่อเซิร์ฟเวอร์ ชื่อฐานข้อมูล และชื่อผู้ใช้
+    ''' ถ้าเจ้าหน้าที่ลุกจากเครื่องโดยไม่กดออกจากระบบ ข้อมูลนั้นจะค้างให้คนถัดไปเห็น
+    ''' ผู้ใช้ปรับค่านี้ได้เองในหน้าตั้งค่า (ดู AdminIdleTimer)
+    ''' </summary>
+    Public Property AdminIdleLogoutMinutes As Integer = 30
+
     Public Function IsAdminLogin(loginName As String) As Boolean
         If AdminLogins Is Nothing OrElse AdminLogins.Length = 0 Then Return False
         Return AdminLogins.Any(Function(n) String.Equals(If(n, "").Trim(), If(loginName, "").Trim(), StringComparison.OrdinalIgnoreCase))
@@ -259,6 +268,7 @@ Public NotInheritable Class AppConfig
         If result.Dialysis Is Nothing Then result.Dialysis = New DialysisSettings()
         result.Dialysis.Months = Math.Max(1, Math.Min(36, result.Dialysis.Months))
         result.RefreshSeconds = Math.Max(3, Math.Min(120, result.RefreshSeconds))
+        result.Security.AdminIdleLogoutMinutes = Math.Max(0, Math.Min(240, result.Security.AdminIdleLogoutMinutes))
         _current = result
     End Sub
 

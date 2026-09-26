@@ -35,8 +35,25 @@ Public NotInheritable Class AppSession
     ''' <summary>ชื่อผู้พัฒนา (แสดงต่อท้ายเวอร์ชันบนหัวหน้าต่างและหน้าตั้งค่า)</summary>
     Public Const DeveloperText As String = "Developed by Komsan Asa"
 
+    Private Shared _adminUser As HosUser
+
     ''' <summary>ผู้ดูแลระบบที่ล็อกอินอยู่ (Nothing = ยังไม่ได้ล็อกอิน)</summary>
     Public Shared Property AdminUser As HosUser
+        Get
+            Return _adminUser
+        End Get
+        Set(value As HosUser)
+            _adminUser = value
+            If value IsNot Nothing Then
+                ' ล็อกอินสำเร็จ — เริ่มนับเวลาไม่ใช้งานใหม่ และลบเหตุผลการออกครั้งก่อน
+                SignedOutByIdle = False
+                AdminIdleTimer.NoteActivity()
+            End If
+        End Set
+    End Property
+
+    ''' <summary>ครั้งล่าสุดออกจากระบบเพราะหมดเวลาไม่ใช้งาน (ใช้บอกเหตุผลในหน้าตั้งค่า)</summary>
+    Public Shared Property SignedOutByIdle As Boolean
 
     Public Shared ReadOnly Property IsAdminSignedIn As Boolean
         Get
@@ -46,8 +63,14 @@ Public NotInheritable Class AppSession
 
     ''' <summary>ออกจากระบบผู้ดูแล (ซ่อนข้อมูลเซิร์ฟเวอร์อีกครั้ง)</summary>
     Public Shared Sub SignOutAdmin()
-        If AdminUser Is Nothing Then Return
-        AdminUser = Nothing
+        SignOutAdmin(False)
+    End Sub
+
+    ''' <summary>ออกจากระบบผู้ดูแล พร้อมบอกว่าเป็นเพราะหมดเวลาไม่ใช้งานหรือไม่</summary>
+    Public Shared Sub SignOutAdmin(becauseIdle As Boolean)
+        If _adminUser Is Nothing Then Return
+        _adminUser = Nothing
+        SignedOutByIdle = becauseIdle
         RaiseEvent SettingsChanged(Nothing, EventArgs.Empty)
     End Sub
 
